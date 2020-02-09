@@ -1,0 +1,220 @@
+<?xml version="1.0"?>
+<SqlWorkbenchSqlProject xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema" Name="SQL Blog Scripts">
+  <Items>
+    <LogicalFolder Name="Connections" Type="2" Sorted="true">
+      <Items>
+        <ConnectionNode Name="DESKTOP-4LV28EO:DESKTOP-4LV28EO\DECCACLONE">
+          <Created>2020-01-23T14:40:52.3425525+08:00</Created>
+          <Type>SQL</Type>
+          <Server>DESKTOP-4LV28EO</Server>
+          <UserName />
+          <Authentication>Windows Authentication</Authentication>
+          <InitialDB>AdventureWorksLT2016</InitialDB>
+          <LoginTimeout>30</LoginTimeout>
+          <ExecutionTimeout>0</ExecutionTimeout>
+          <ConnectionProtocol>NotSpecified</ConnectionProtocol>
+          <ApplicationName>Microsoft SQL Server Management Studio - Query</ApplicationName>
+        </ConnectionNode>
+        <ConnectionNode Name="DESKTOP-4LV28EO\SQLEXPRESS103:DESKTOP-4LV28EO\DECCACLONE">
+          <Created>2020-01-20T01:25:34.8351116+08:00</Created>
+          <Type>SQL</Type>
+          <Server>DESKTOP-4LV28EO\SQLEXPRESS103</Server>
+          <UserName />
+          <Authentication>Windows Authentication</Authentication>
+          <InitialDB>master</InitialDB>
+          <LoginTimeout>30</LoginTimeout>
+          <ExecutionTimeout>0</ExecutionTimeout>
+          <ConnectionProtocol>NotSpecified</ConnectionProtocol>
+          <ApplicationName>Microsoft SQL Server Management Studio - Query</ApplicationName>
+        </ConnectionNode>
+      </Items>
+    </LogicalFolder>
+    <LogicalFolder Name="Queries" Type="0" Sorted="true">
+      <Items>
+        <FileNode Name="Aggregate Functions.sql">
+          <AssociatedConnectionMoniker>8c91a03d-f9b4-46c0-a305-b5dcc79ff907:DESKTOP-4LV28EO\SQLEXPRESS103:True</AssociatedConnectionMoniker>
+          <AssociatedConnSrvName>DESKTOP-4LV28EO\SQLEXPRESS103</AssociatedConnSrvName>
+          <AssociatedConnUserName />
+          <FullPath>Aggregate Functions.sql</FullPath>
+        </FileNode>
+        <FileNode Name="Basic Queries.sql">
+          <AssociatedConnectionMoniker />
+          <AssociatedConnSrvName />
+          <AssociatedConnUserName />
+          <FullPath>Basic Queries.sql</FullPath>
+        </FileNode>
+        <FileNode Name="CalculateAge.sql">
+          <AssociatedConnectionMoniker>8c91a03d-f9b4-46c0-a305-b5dcc79ff907:DESKTOP-4LV28EO\SQLEXPRESS103:True</AssociatedConnectionMoniker>
+          <AssociatedConnSrvName>DESKTOP-4LV28EO\SQLEXPRESS103</AssociatedConnSrvName>
+          <AssociatedConnUserName />
+          <FullPath>CalculateAge.sql</FullPath>
+        </FileNode>
+        <FileNode Name="Case.sql">
+          <AssociatedConnectionMoniker>8c91a03d-f9b4-46c0-a305-b5dcc79ff907:DESKTOP-4LV28EO\SQLEXPRESS103:True</AssociatedConnectionMoniker>
+          <AssociatedConnSrvName>DESKTOP-4LV28EO\SQLEXPRESS103</AssociatedConnSrvName>
+          <AssociatedConnUserName />
+          <FullPath>Case.sql</FullPath>
+        </FileNode>
+        <FileNode Name="Constraints.sql">
+          <AssociatedConnectionMoniker>8c91a03d-f9b4-46c0-a305-b5dcc79ff907:DESKTOP-4LV28EO\SQLEXPRESS103:True</AssociatedConnectionMoniker>
+          <AssociatedConnSrvName>DESKTOP-4LV28EO\SQLEXPRESS103</AssociatedConnSrvName>
+          <AssociatedConnUserName />
+          <FullPath>Constraints.sql</FullPath>
+        </FileNode>
+        <FileNode Name="Create and Manipulate Tables.sql">
+          <AssociatedConnectionMoniker />
+          <AssociatedConnSrvName />
+          <AssociatedConnUserName />
+          <FullPath>Create and Manipulate Tables.sql</FullPath>
+        </FileNode>
+        <FileNode Name="DateFunctions.sql">
+          <AssociatedConnectionMoniker />
+          <AssociatedConnSrvName />
+          <AssociatedConnUserName />
+          <FullPath>DateFunctions.sql</FullPath>
+        </FileNode>
+        <FileNode Name="DynamicSql.sql">
+          <AssociatedConnectionMoniker>8c91a03d-f9b4-46c0-a305-b5dcc79ff907:DESKTOP-4LV28EO\SQLEXPRESS103:True</AssociatedConnectionMoniker>
+          <AssociatedConnSrvName>DESKTOP-4LV28EO\SQLEXPRESS103</AssociatedConnSrvName>
+          <AssociatedConnUserName />
+          <FullPath>DynamicSql.sql</FullPath>
+        </FileNode>
+        <FileNode Name="Functions.sql">
+          <AssociatedConnectionMoniker>8c91a03d-f9b4-46c0-a305-b5dcc79ff907:DESKTOP-4LV28EO\SQLEXPRESS103:True</AssociatedConnectionMoniker>
+          <AssociatedConnSrvName>DESKTOP-4LV28EO\SQLEXPRESS103</AssociatedConnSrvName>
+          <AssociatedConnUserName />
+          <FullPath>Functions.sql</FullPath>
+        </FileNode>
+        <FileNode Name="Grouping.sql">
+          <AssociatedConnectionMoniker>8c91a03d-f9b4-46c0-a305-b5dcc79ff907:DESKTOP-4LV28EO\SQLEXPRESS103:True</AssociatedConnectionMoniker>
+          <AssociatedConnSrvName>DESKTOP-4LV28EO\SQLEXPRESS103</AssociatedConnSrvName>
+          <AssociatedConnUserName />
+          <FullPath>Grouping.sql</FullPath>
+        </FileNode>
+        <FileNode Name="GUID.sql">
+          <AssociatedConnectionMoniker>8c91a03d-f9b4-46c0-a305-b5dcc79ff907:DESKTOP-4LV28EO\SQLEXPRESS103:True</AssociatedConnectionMoniker>
+          <AssociatedConnSrvName>DESKTOP-4LV28EO\SQLEXPRESS103</AssociatedConnSrvName>
+          <AssociatedConnUserName />
+          <FullPath>GUID.sql</FullPath>
+        </FileNode>
+        <FileNode Name="Joining Tables.sql">
+          <AssociatedConnectionMoniker>8c91a03d-f9b4-46c0-a305-b5dcc79ff907:DESKTOP-4LV28EO\SQLEXPRESS103:True</AssociatedConnectionMoniker>
+          <AssociatedConnSrvName>DESKTOP-4LV28EO\SQLEXPRESS103</AssociatedConnSrvName>
+          <AssociatedConnUserName />
+          <FullPath>Joining Tables.sql</FullPath>
+        </FileNode>
+        <FileNode Name="Merge.sql">
+          <AssociatedConnectionMoniker>8c91a03d-f9b4-46c0-a305-b5dcc79ff907:DESKTOP-4LV28EO\SQLEXPRESS103:True</AssociatedConnectionMoniker>
+          <AssociatedConnSrvName>DESKTOP-4LV28EO\SQLEXPRESS103</AssociatedConnSrvName>
+          <AssociatedConnUserName />
+          <FullPath>Merge.sql</FullPath>
+        </FileNode>
+        <FileNode Name="NewTableAndJoins.sql">
+          <AssociatedConnectionMoniker>8c91a03d-f9b4-46c0-a305-b5dcc79ff907:DESKTOP-4LV28EO\SQLEXPRESS103:True</AssociatedConnectionMoniker>
+          <AssociatedConnSrvName>DESKTOP-4LV28EO\SQLEXPRESS103</AssociatedConnSrvName>
+          <AssociatedConnUserName />
+          <FullPath>NewTableAndJoins.sql</FullPath>
+        </FileNode>
+        <FileNode Name="Numbers - Ideal Gas Law.sql">
+          <AssociatedConnectionMoniker />
+          <AssociatedConnSrvName />
+          <AssociatedConnUserName />
+          <FullPath>Numbers - Ideal Gas Law.sql</FullPath>
+        </FileNode>
+        <FileNode Name="SFTPXml.sql">
+          <AssociatedConnectionMoniker>8c91a03d-f9b4-46c0-a305-b5dcc79ff907:DESKTOP-4LV28EO\SQLEXPRESS103:True</AssociatedConnectionMoniker>
+          <AssociatedConnSrvName>DESKTOP-4LV28EO\SQLEXPRESS103</AssociatedConnSrvName>
+          <AssociatedConnUserName />
+          <FullPath>SFTPXml.sql</FullPath>
+        </FileNode>
+        <FileNode Name="Shred Massive XML.sql">
+          <AssociatedConnectionMoniker>8c91a03d-f9b4-46c0-a305-b5dcc79ff907:DESKTOP-4LV28EO\SQLEXPRESS103:True</AssociatedConnectionMoniker>
+          <AssociatedConnSrvName>DESKTOP-4LV28EO\SQLEXPRESS103</AssociatedConnSrvName>
+          <AssociatedConnUserName />
+          <FullPath>Shred Massive XML.sql</FullPath>
+        </FileNode>
+        <FileNode Name="Stored Procedure.sql">
+          <AssociatedConnectionMoniker>8c91a03d-f9b4-46c0-a305-b5dcc79ff907:DESKTOP-4LV28EO\SQLEXPRESS103:True</AssociatedConnectionMoniker>
+          <AssociatedConnSrvName>DESKTOP-4LV28EO\SQLEXPRESS103</AssociatedConnSrvName>
+          <AssociatedConnUserName />
+          <FullPath>Stored Procedure.sql</FullPath>
+        </FileNode>
+        <FileNode Name="String Functions.sql">
+          <AssociatedConnectionMoniker>8c91a03d-f9b4-46c0-a305-b5dcc79ff907:DESKTOP-4LV28EO\SQLEXPRESS103:True</AssociatedConnectionMoniker>
+          <AssociatedConnSrvName>DESKTOP-4LV28EO\SQLEXPRESS103</AssociatedConnSrvName>
+          <AssociatedConnUserName />
+          <FullPath>String Functions.sql</FullPath>
+        </FileNode>
+        <FileNode Name="SubQueries.sql">
+          <AssociatedConnectionMoniker>8c91a03d-f9b4-46c0-a305-b5dcc79ff907:DESKTOP-4LV28EO\SQLEXPRESS103:True</AssociatedConnectionMoniker>
+          <AssociatedConnSrvName>DESKTOP-4LV28EO\SQLEXPRESS103</AssociatedConnSrvName>
+          <AssociatedConnUserName />
+          <FullPath>SubQueries.sql</FullPath>
+        </FileNode>
+        <FileNode Name="Synonyms.sql">
+          <AssociatedConnectionMoniker>8c91a03d-f9b4-46c0-a305-b5dcc79ff907:DESKTOP-4LV28EO\SQLEXPRESS103:True</AssociatedConnectionMoniker>
+          <AssociatedConnSrvName>DESKTOP-4LV28EO\SQLEXPRESS103</AssociatedConnSrvName>
+          <AssociatedConnUserName />
+          <FullPath>Synonyms.sql</FullPath>
+        </FileNode>
+        <FileNode Name="Temporal Tables.sql">
+          <AssociatedConnectionMoniker>8c91a03d-f9b4-46c0-a305-b5dcc79ff907:DESKTOP-4LV28EO:True</AssociatedConnectionMoniker>
+          <AssociatedConnSrvName>DESKTOP-4LV28EO</AssociatedConnSrvName>
+          <AssociatedConnUserName />
+          <FullPath>Temporal Tables.sql</FullPath>
+        </FileNode>
+        <FileNode Name="TemporalTableOldTable.sql">
+          <AssociatedConnectionMoniker>8c91a03d-f9b4-46c0-a305-b5dcc79ff907:DESKTOP-4LV28EO:True</AssociatedConnectionMoniker>
+          <AssociatedConnSrvName>DESKTOP-4LV28EO</AssociatedConnSrvName>
+          <AssociatedConnUserName />
+          <FullPath>TemporalTableOldTable.sql</FullPath>
+        </FileNode>
+        <FileNode Name="ThirdTable.sql">
+          <AssociatedConnectionMoniker>8c91a03d-f9b4-46c0-a305-b5dcc79ff907:DESKTOP-4LV28EO\SQLEXPRESS103:True</AssociatedConnectionMoniker>
+          <AssociatedConnSrvName>DESKTOP-4LV28EO\SQLEXPRESS103</AssociatedConnSrvName>
+          <AssociatedConnUserName />
+          <FullPath>ThirdTable.sql</FullPath>
+        </FileNode>
+        <FileNode Name="Triggers.sql">
+          <AssociatedConnectionMoniker>8c91a03d-f9b4-46c0-a305-b5dcc79ff907:DESKTOP-4LV28EO\SQLEXPRESS103:True</AssociatedConnectionMoniker>
+          <AssociatedConnSrvName>DESKTOP-4LV28EO\SQLEXPRESS103</AssociatedConnSrvName>
+          <AssociatedConnUserName />
+          <FullPath>Triggers.sql</FullPath>
+        </FileNode>
+        <FileNode Name="TryCatch.sql">
+          <AssociatedConnectionMoniker>8c91a03d-f9b4-46c0-a305-b5dcc79ff907:DESKTOP-4LV28EO\SQLEXPRESS103:True</AssociatedConnectionMoniker>
+          <AssociatedConnSrvName>DESKTOP-4LV28EO\SQLEXPRESS103</AssociatedConnSrvName>
+          <AssociatedConnUserName />
+          <FullPath>TryCatch.sql</FullPath>
+        </FileNode>
+        <FileNode Name="Update and Deletes.sql">
+          <AssociatedConnectionMoniker>8c91a03d-f9b4-46c0-a305-b5dcc79ff907:DESKTOP-4LV28EO\SQLEXPRESS103:True</AssociatedConnectionMoniker>
+          <AssociatedConnSrvName>DESKTOP-4LV28EO\SQLEXPRESS103</AssociatedConnSrvName>
+          <AssociatedConnUserName />
+          <FullPath>Update and Deletes.sql</FullPath>
+        </FileNode>
+        <FileNode Name="Vertical Join.sql">
+          <AssociatedConnectionMoniker>8c91a03d-f9b4-46c0-a305-b5dcc79ff907:DESKTOP-4LV28EO\SQLEXPRESS103:True</AssociatedConnectionMoniker>
+          <AssociatedConnSrvName>DESKTOP-4LV28EO\SQLEXPRESS103</AssociatedConnSrvName>
+          <AssociatedConnUserName />
+          <FullPath>Vertical Join.sql</FullPath>
+        </FileNode>
+        <FileNode Name="Views.sql">
+          <AssociatedConnectionMoniker>8c91a03d-f9b4-46c0-a305-b5dcc79ff907:DESKTOP-4LV28EO\SQLEXPRESS103:True</AssociatedConnectionMoniker>
+          <AssociatedConnSrvName>DESKTOP-4LV28EO\SQLEXPRESS103</AssociatedConnSrvName>
+          <AssociatedConnUserName />
+          <FullPath>Views.sql</FullPath>
+        </FileNode>
+        <FileNode Name="XML.sql">
+          <AssociatedConnectionMoniker>8c91a03d-f9b4-46c0-a305-b5dcc79ff907:DESKTOP-4LV28EO\SQLEXPRESS103:True</AssociatedConnectionMoniker>
+          <AssociatedConnSrvName>DESKTOP-4LV28EO\SQLEXPRESS103</AssociatedConnSrvName>
+          <AssociatedConnUserName />
+          <FullPath>XML.sql</FullPath>
+        </FileNode>
+      </Items>
+    </LogicalFolder>
+    <LogicalFolder Name="Miscellaneous" Type="3" Sorted="true">
+      <Items />
+    </LogicalFolder>
+  </Items>
+</SqlWorkbenchSqlProject>
