@@ -1,0 +1,7 @@
+C:\Users\ASUS\source\repos\70-768 Chap 2\70-768 Chap 2\bin\Model.asdatabase
+C:\Users\ASUS\source\repos\70-768 Chap 2\70-768 Chap 2\bin\Model.deploymenttargets
+C:\Users\ASUS\source\repos\70-768 Chap 2\70-768 Chap 2\bin\Model.deploymentoptions
+C:\Users\ASUS\source\repos\70-768 Chap 2\70-768 Chap 2\obj\Development\70-768 Chap 2.smproj.CoreCompileInputs.cache
+C:\Users\ASUS\source\repos\70-768 Chap 2\70-768 Chap 2\obj\Development\Model.asdatabase
+C:\Users\ASUS\source\repos\70-768 Chap 2\70-768 Chap 2\obj\Development\Model.deploymentoptions
+C:\Users\ASUS\source\repos\70-768 Chap 2\70-768 Chap 2\obj\Development\Model.deploymenttargets

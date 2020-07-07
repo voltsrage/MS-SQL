@@ -1,0 +1,392 @@
+--Evaluate to Get Table Info
+
+--Returns everything from customer table
+EVALUATE
+'Customer'
+
+--Returns everything from Sale table
+EVALUATE
+'Sale'
+
+/******/
+--Summarize acts like a group by
+
+--Summarize('Table_name',dim1,dim2,dim3,"measure name",measure,"measure_name",measure)
+
+--Get the Total Sales and Sales Count From sales table
+EVALUATE
+SUMMARIZE(
+'Sale',
+"Total Sales",
+FORMAT('Sale'[Total Sales],"Currency"),
+"Sales Count",
+FORMAT('Sale'[Sale Count],"#,#")
+)
+
+--Get City Count From City Table
+
+EVALUATE
+SUMMARIZE(
+'City',
+"City Count",
+FORMAT('City'[City Count],"#,#")
+)
+
+--Group Total Sales and Profits By Territoty
+EVALUATE
+SUMMARIZE(
+'Sale',
+'City'[Sales Territory],
+"Total Sales",
+FORMAT('Sale'[Total Sales],"Currency"),
+"Sales Count",
+FORMAT('Sale'[Sale Count],"#,#")
+)
+
+--Group Total Sales and Profits By Territory and Color
+EVALUATE
+SUMMARIZE(
+'Sale',
+'City'[Sales Territory],
+'Stock Item'[Color],
+"Total Sales",
+FORMAT('Sale'[Total Sales],"Currency"),
+"Sales Count",
+FORMAT('Sale'[Sale Count],"#,#")
+)
+ORDER BY 
+'City'[Sales Territory]
+
+//Use Rollup
+//Summarize('Tbl_name',ROLLUP(columns to be grouped by),"measure name",measure,"measure_name",measure)
+--Group Total Sales and Profits By Territory and Color
+EVALUATE
+SUMMARIZE(
+'Sale',
+ROLLUP(
+'City'[Sales Territory],
+'Stock Item'[Color]),
+"Total Sales",
+FORMAT('Sale'[Total Sales],"Currency"),
+"Sales Count",
+FORMAT('Sale'[Sale Count],"#,#")
+)
+ORDER BY 
+'City'[Sales Territory],
+'Stock Item'[Color]
+
+//**********************************************************************
+
+//QUERY SCOPE
+
+//Use DEFINE
+
+DEFINE
+Measure 'Sale'[Total Quantity] =
+SUM('Sale'[Quantity])
+MEASURE 'Sale'[Average Sales Amount] = 
+'Sale'[Total Sales]/'Sale'[Total Quantity]
+EVALUATE
+SUMMARIZE(
+'Sale',
+'City'[Sales Territory],
+"Total Sales",
+FORMAT('Sale'[Total Sales],"Currency"),
+"Average Sales Amount",
+FORMAT('Sale'[Average Sales Amount],"Currency")
+)
+
+//Use add columns
+//ADDCOLUMNS(SUMMARIZE(columns to be grouped by),"measure name",measure,"measure_name",measure)
+
+DEFINE
+Measure 'Sale'[Total Quantity] =
+SUM('Sale'[Quantity])
+MEASURE 'Sale'[Average Sales Amount] = 
+'Sale'[Total Sales]/'Sale'[Total Quantity]
+EVALUATE
+ADDCOLUMNS(
+SUMMARIZE(
+'Sale',
+'City'[Sales Territory]),
+"Total Sales",
+FORMAT('Sale'[Total Sales],"Currency"),
+"Average Sales Amount",
+FORMAT('Sale'[Average Sales Amount],"Currency")
+)
+
+
+//SUM VS SUMX
+
+//SUM does not work because you cannot row by row calculation using SUM
+//You can however to row*Measure
+DEFINE
+MEASURE 'Sale'[Total Extended Discount Amount] = 
+SUM('Sale'[Quantity] * 'Sale'[Quantity])
+EVALUATE
+SUMMARIZE(
+'Sale',
+ROLLUP('Stock Item'[Color]),
+"Total Extended Discount Amount",
+'Sale'[Total Extended Discount Amount]
+)
+ORDER BY
+'Stock Item'[Color]
+
+//Inorder to do row by row multiplication then sum use SUMX instead
+//SUMX('tbl_name',col1,col2) in tbl SUM(row*row)
+DEFINE
+MEASURE 'Sale'[Total Extended Discount Amount] = 
+SUMX('Sale','Sale'[Discount Amount] * 'Sale'[Quantity])
+EVALUATE
+SUMMARIZE(
+'Sale',
+ROLLUP('Stock Item'[Color]),
+"Total Extended Discount Amount",
+'Sale'[Total Extended Discount Amount]
+)
+ORDER BY
+'Stock Item'[Color]
+
+//*****************************************************************************
+
+//Calculate
+//Removes or adds filter to a certain calculation
+
+//ALL('Tbl_Name') - Ignores all the filters on table
+
+DEFINE
+MEASURE 'Sale'[Overall Sale Count] =
+CALCULATE(COUNTROWS('Sale'),ALL('Sale'))
+MEASURE 'Sale'[Percent of Total Sale Amount] = 
+'Sale'[Sale Count]/'Sale'[Overall Sale Count]
+EVALUATE
+SUMMARIZE(
+'Sale',
+ROLLUP('City'[Sales Territory]),
+"Sale Count",
+'Sale'[Sale Count],
+"Overall Sale Count",
+'Sale'[Overall Sale Count],
+"Percent of Total Sale Amount",
+'Sale'[Percent of Total Sale Amount]
+)
+
+DEFINE
+MEASURE 'Sale'[Overall Sale Count] =
+CALCULATE(COUNTROWS('Sale'),ALL('Sale'))
+MEASURE 'Sale'[Percent of Total Sale Amount] = 
+'Sale'[Sale Count]/'Sale'[Overall Sale Count]
+EVALUATE
+SUMMARIZE(
+'Sale',
+ROLLUP('City'[Sales Territory]),
+"Sale Count",
+'Sale'[Sale Count],
+"Overall Sale Count",
+'Sale'[Overall Sale Count],
+"Percent of Total Sale Amount",
+'Sale'[Percent of Total Sale Amount]
+)
+
+//ALLExcept('TBl'[col]) - remove all filters except for this
+
+DEFINE
+MEASURE 'Sale'[Avg Selling $] =
+AVERAGE('Sale'[Unit Price])
+MEASURE 'Sale'[Tot Retail $] =
+SUMX( 'Stock Item','Stock Item'[Recommended Retail Price])
+MEASURE 'Sale'[Stock Items] =
+COUNTROWS('Stock Item')
+MEASURE 'Sale'[Avg Retail $] =
+AVERAGE('Stock Item'[Recommended Retail Price])
+MEASURE 'Sale'[Correct Total Retail $] =
+//Because you want the total for all colors including unsold items, you sum prices using only stock item color
+//as a filter
+//otherwise it also be filter by the foreign key relationship
+CALCULATE(
+SUM('Stock Item'[Recommended Retail Price]),
+ALLEXCEPT('Stock Item','Stock Item'[Color])
+) 
+--The ideas follows, to get right total the only filter should be stock item color
+MEASURE 'Sale'[Correct Stock Items] =
+CALCULATE(
+COUNTROWS('Stock Item'),
+ALLEXCEPT('Stock Item','Stock Item'[Color])
+) 
+MEASURE 'Sale'[Correct Avg Retail $] =
+CALCULATE(
+AVERAGE('Stock Item'[Recommended Retail Price]),
+ALLEXCEPT('Stock Item','Stock Item'[Color])
+) EVALUATE
+SUMMARIZE(
+'Sale',
+ROLLUP('Stock Item'[Color]),
+"Avg Selling $",
+'Sale'[Avg Selling $],
+"Retail $",
+'Sale'[Tot Retail $],
+"Stock Items",
+'Sale'[Stock Items],
+"Avg Retail $",
+'Sale'[Avg Retail $],
+"Correct Retail $",
+'Sale'[Correct Total Retail $] ,
+"Correct Stock Items",
+'Sale'[Correct Stock Items],
+"Correct Avg Retail $",
+'Sale'[Correct Avg Retail $]
+) ORDER BY
+'Stock Item'[Color]
+
+//**********************************************************************
+
+EVALUATE 
+'Customer'
+ORDER BY 
+'Customer'[Postal Code]
+
+
+--Returns everything from Sale table by city key then stock item #
+EVALUATE
+'Sale'
+ORDER BY
+Sale[City Key],
+Sale[Stock Item Key]
+
+--Returns everything from Sale table by city key then stock item #
+--With City key starting at 40000
+EVALUATE
+'Sale'
+ORDER BY
+Sale[City Key],
+Sale[Stock Item Key]
+START AT
+40000
+
+//**********************************************************************
+
+//Filter
+
+//Return the Total Sales in the Far West
+EVALUATE
+SUMMARIZE(
+FILTER('Sale',RELATED('City'[Sales Territory]) = "Far West"),
+'City'[Sales Territory],
+"Total Sales",
+'Sale'[Total Sales]
+)
+
+//Return the Total Sales in the Far West For Black Items
+EVALUATE
+SUMMARIZE(
+FILTER('Sale',RELATED('City'[Sales Territory]) = "Far West" && RELATED('Stock Item'[Color]) = "Black"),
+'City'[Sales Territory],
+"Total Sales",
+'Sale'[Total Sales]
+)
+
+//Return the Total Sales in the Far West For Black Items EVALUATE
+//Return the Total Sales in the Far West For Black Items
+EVALUATE
+SUMMARIZE(
+FILTER('Sale',RELATED('City'[Sales Territory]) = "Far West" && RELATED('Stock Item'[Color]) = "Black" &&
+RELATED('Date'[Calendar Year]) = 2016),
+'City'[Sales Territory],
+"Total Sales",
+'Sale'[Total Sales]
+)
+
+// Using All
+//Return the total sale count from brands and colors
+DEFINE
+MEASURE 'Sale'[Overall Brand Sale Count] = 
+CALCULATE(
+COUNTROWS('Sale'),
+ALL('Stock Item'[Brand]))
+MEASURE 'Sale'[Overall Color Sale Count] = 
+CALCULATE(
+COUNTROWS('Sale'),
+ALL('Stock Item'[Color]))
+MEASURE 'Sale'[Color Percentile] = 
+DIVIDE('Sale'[Sale Count],'Sale'[Overall Color Sale Count])
+MEASURE 'Sale'[Brand Percentile] = 
+DIVIDE('Sale'[Sale Count],'Sale'[Overall Brand Sale Count])
+EVALUATE
+ADDCOLUMNS(
+SUMMARIZE(
+'Sale',
+'Stock Item'[Color],
+'Stock Item'[Brand],
+"Sale Count",
+'Sale'[Sale Count]),
+"Overall Color Sale Count",
+'Sale'[Overall Color Sale Count],
+"Color Percentile",
+'Sale'[Color Percentile],
+"Overall Color Brand Count",
+'Sale'[Overall Brand Sale Count],
+"Brand Percentile",
+'Sale'[Brand Percentile])
+ORDER BY
+'Stock Item'[Brand],
+'Stock Item'[Color]
+
+//Rows - When you need a tuple setup for DAX
+EVALUATE
+UNION(
+ROW(
+"Sales Territory",
+"Far West",
+"Calendar Year",
+"CY2014",
+"Buying Group",
+"Tailspin Toys",
+"Profits",
+CALCULATE(
+'Sale'[Total Profit],
+'City'[Sales Territory] = "Far West",
+'Date'[Calendar Year Label] = "CY2014",
+'Customer'[Buying Group] = "Tailspin Toys")
+),
+ROW(
+"Sales Territory",
+"Far West",
+"Calendar Year",
+"CY2014",
+"Buying Group",
+"Wingtip Toys",
+"Profits",
+CALCULATE(
+'Sale'[Total Profit],
+'City'[Sales Territory] = "Far West",
+'Date'[Calendar Year Label] = "CY2014",
+'Customer'[Buying Group] = "Wingtip Toys")
+))
+
+EVALUATE
+SUMMARIZE(
+FILTER('Sale',RELATED('Stock Item'[Color]) = "Black" || RELATED('Stock Item'[Color]) = "Blue" 
+|| RELATED('Stock Item'[Color]) = "Yellow" || RELATED('Stock Item'[Color]) = "Red"),
+'Stock Item'[Color],
+"Total Sales",
+'Sale'[Total Sales]
+)
+
+//TopN and Rankx
+
+//TopN
+
+//Return the top 3 Cities based on quantity
+
+EVALUATE
+TOPN(3,
+SUMMARIZE(
+'City',
+'City'[City],
+"Sales",
+[Total Sales]),
+[Sales])
+
+//Rankx
+

@@ -1,0 +1,571 @@
+//Returns the result of the first measure in the first measure group
+SELECT 
+[Measures].[Quantity] ON COLUMNS
+FROM 
+[Wide World Importers DW];
+
+//Using the ON Columns axis
+SELECT 
+[Measures].[Quantity] ON COLUMNS
+FROM 
+[Wide World Importers DW];
+
+SELECT 
+{[Measures].[Sale Count],[Measures].[Profit]} ON COLUMNS
+FROM 
+[Wide World Importers DW];
+
+SELECT 
+{[Measures].[Sale Count],[Measures].[Profit],[Measures].[Sales Amount Without Tax]} ON COLUMNS
+FROM 
+[Wide World Importers DW];
+
+/**************************************************************/
+
+//Using the ON Rows to Slice and Dice Columns (Filtering) By Dimensions
+
+SELECT 
+[Measures].[Quantity] ON COLUMNS,
+[Stock Item].[Color].&[Blue] ON ROWS
+FROM 
+[Wide World Importers DW];
+
+// Using Sets - Must have same Dimension.Hierarchy
+SELECT 
+{[Measures].[Sale Count],[Measures].[Profit]} ON COLUMNS,
+{[Stock Item].[Color].&[Blue],[Stock Item].[Color].&[Yellow]}ON ROWS
+FROM 
+[Wide World Importers DW];
+
+SELECT 
+{[Measures].[Sale Count],[Measures].[Profit],[Measures].[Sales Amount Without Tax]} ON COLUMNS,
+{[City].[State Province].&[Alabama],[City].[State Province].&[Arkansas]} ON ROWS
+FROM 
+[Wide World Importers DW];
+
+//Dimension.Hierarchy.Members Returns the All in results
+SELECT 
+{[Measures].[Sale Count],[Measures].[Profit],[Measures].[Sales Amount Without Tax]} ON COLUMNS,
+{[City].[Sales Territory].Members} ON ROWS
+FROM 
+[Wide World Importers DW];
+
+//Dimension.Hierarchy.Level.Members Does Not Return the All in results
+SELECT 
+{[Measures].[Sale Count],[Measures].[Profit],[Measures].[Sales Amount Without Tax]} ON COLUMNS,
+{[City].[Sales Territory].[Sales Territory].Members} ON ROWS
+FROM 
+[Wide World Importers DW];
+
+/**************************************************************/
+
+//Using Tuples - In parentheses, collection of different dimensions and hierarchies
+//Cannot be in used in rows or columns
+
+//Columns and Rows VS Tuple in Where
+SELECT
+FROM
+[Wide World Importers DW]
+WHERE 
+([Measures].[Sales Amount Without Tax],
+[Stock Item].[Color].&[Black]);
+
+// Is equal to 
+SELECT
+[Measures].[Sales Amount Without Tax] ON Columns,
+[Stock Item].[Color].&[Black] ON ROWS
+FROM
+[Wide World Importers DW];
+
+//What is the Total Sales Without Tax For Black Items 2016
+SELECT
+[Measures].[Sales Amount Without Tax] ON Columns,
+[Stock Item].[Color].&[Black] ON ROWS
+FROM
+[Wide World Importers DW]
+WHERE
+([Invoice Date].[Calendar].&[CY2016]);
+
+//What is the Total Sales Without Tax For Black Items 2016 in the SouthWest
+
+SELECT
+[Measures].[Sales Amount Without Tax] ON Columns,
+[Stock Item].[Color].&[Black] ON ROWS
+FROM
+[Wide World Importers DW]
+WHERE
+([Invoice Date].[Calendar].&[CY2016],[City].[Sales Territory].&[Southwest]);
+
+/**************************************************************/
+
+//Tuple Sets - Set of Tuples, each tuple must have the same structure
+
+//What is the Sales Without Tax For Blue in SW and Yellow in SE in 2016,2015,2014
+SELECT
+{([Measures].[Sales Amount Without Tax],[Invoice Date].[Calendar].&[CY2016]),
+([Measures].[Sales Amount Without Tax],[Invoice Date].[Calendar].&[CY2015]),
+([Measures].[Sales Amount Without Tax],[Invoice Date].[Calendar].&[CY2014])
+} ON Columns,
+{([Stock Item].[Color].&[Blue],[City].[Sales Territory].&[Southwest])
+,([Stock Item].[Color].&[Yellow],[City].[Sales Territory].&[SouthEast])} ON ROWS
+FROM
+[Wide World Importers DW];
+
+//What is the Sales Without Tax For Blue in SW and Yellow in SE in 2016,2015,2014
+//Where Buying Group is Tailspin Toys
+SELECT
+{([Measures].[Sales Amount Without Tax],[Invoice Date].[Calendar].&[CY2016]),
+([Measures].[Sales Amount Without Tax],[Invoice Date].[Calendar].&[CY2015]),
+([Measures].[Sales Amount Without Tax],[Invoice Date].[Calendar].&[CY2014])
+} ON Columns,
+{([Stock Item].[Color].&[Blue],[City].[Sales Territory].&[Southwest])
+,([Stock Item].[Color].&[Yellow],[City].[Sales Territory].&[SouthEast])} ON ROWS
+FROM
+[Wide World Importers DW]
+WHERE
+([Customer].[Buying Group].&[Tailspin Toys]);
+
+/**************************************************************/
+
+//Using Dimension.Hierarchy.All
+
+//What is the Total Sales Without Tax For All the Colors in  2016 in the SouthWest
+
+SELECT
+[Measures].[Sales Amount Without Tax] ON Columns,
+[Stock Item].[Color].[All] ON ROWS
+FROM
+[Wide World Importers DW]
+WHERE
+([Invoice Date].[Calendar].&[CY2016],[City].[Sales Territory].&[Southwest]);
+
+//Using Dimension.Hierarchy.Level.Members + Dimension.Hierarchy.All
+//To return all the Totals for individual colors + overall total
+
+SELECT
+[Measures].[Sales Amount Without Tax] ON Columns,
+{[Stock Item].[Color].[Color].Members,[Stock Item].[Color].[All]} ON ROWS
+FROM
+[Wide World Importers DW]
+WHERE
+([Invoice Date].[Calendar].&[CY2016],[City].[Sales Territory].&[Southwest]);
+
+/**************************************************************/
+// Using Order(Set,Measure, DESC/ASC)
+//Order a set by a particular dimension
+
+//Order Individual Colors by Sales without Tax Highest First
+SELECT
+[Measures].[Sales Amount Without Tax] ON Columns,
+{ORDER(
+[Stock Item].[Color].[Color].Members,[Measures].[Sales Amount Without Tax], DESC)
+,[Stock Item].[Color].[All]} ON ROWS
+FROM
+[Wide World Importers DW]
+WHERE
+([Invoice Date].[Calendar].&[CY2016],[City].[Sales Territory].&[Southwest]);
+
+//Return Sales without Tax For Colors Order By Profit
+
+SELECT
+[Measures].[Sales Amount Without Tax] ON Columns,
+{ORDER(
+[Stock Item].[Color].[Color].Members,[Measures].[Profit], DESC)
+,[Stock Item].[Color].[All]} ON ROWS
+FROM
+[Wide World Importers DW];
+
+/**************************************************************/
+
+// Limit Records Using HEAD (SQL TOP) or TAIL In combination with ORDER
+
+// Return Sales w/o Tax for Top 5 Colors By Profit
+SELECT
+[Measures].[Sales Amount Without Tax] ON Columns,
+{HEAD(ORDER(
+[Stock Item].[Color].[Color].Members,[Measures].[Profit], DESC),5)
+} ON ROWS
+FROM
+[Wide World Importers DW];
+
+// Return Sales w/o Tax for Top Ten Cities By Sale Count
+SELECT
+{[Measures].[Sales Amount Without Tax],[Measures].[Profit]} ON Columns,
+{([City].[State Province].[State Province].Members,HEAD(ORDER(
+[City].[City].[City].Members,[Measures].[Sale Count], DESC),10))
+} ON ROWS
+FROM
+[Wide World Importers DW];
+
+// Return Sales w/o Tax for Bottom Ten Cities By Sale Count
+SELECT
+{[Measures].[Sales Amount Without Tax],[Measures].[Profit]} ON Columns,
+{([City].[State Province].[State Province].Members,Tail(ORDER(
+[City].[City].[City].Members,[Measures].[Sale Count], DESC),10))
+} ON ROWS
+FROM
+[Wide World Importers DW];
+
+/**************************************************************/
+
+//User TopCount To Replace Head+Order since it takes a long time to process
+//TopCount(Set,#,Measure) Return # Records of Set Based on Measure
+
+SELECT
+[Measures].[Sales Amount Without Tax] ON Columns,
+{TopCount(
+[Stock Item].[Color].[Color].Members,5,[Measures].[Profit])
+} ON ROWS
+FROM
+[Wide World Importers DW];
+
+// Return Sales w/o Tax for Top Ten Cities By Sale Count
+SELECT
+{[Measures].[Sales Amount Without Tax],[Measures].[Profit]} ON Columns,
+{([City].[State Province].[State Province].Members,
+TOPCOUNT(
+[City].[City].[City].Members,10,[Measures].[Sale Count])
+)
+} ON ROWS
+FROM
+[Wide World Importers DW];
+
+// Return Sales w/o Tax for Bottom Ten Cities By Sale Count
+SELECT
+{[Measures].[Sales Amount Without Tax],[Measures].[Profit]} ON Columns,
+{([City].[State Province].[State Province].Members,
+BOTTOMCOUNT(
+NONEMPTY([City].[City].[City].Members,[Measures].[Sale Count])
+,10,[Measures].[Sale Count])
+)
+} ON ROWS
+FROM
+[Wide World Importers DW];
+
+/**************************************************************/
+
+//Add FILTER to further narrow result set
+//FILTER(set,measure condition) Filter set based on req'ment on measure
+
+SELECT
+[Measures].[Sales Amount Without Tax] ON Columns,
+FILTER(
+NONEMPTY([Stock Item].[Color].[Color].Members,
+[Measures].[Sales Amount Without Tax]),
+[Measures].[Sales Amount Without Tax] > 70000) ON ROWS
+FROM
+[Wide World Importers DW]
+WHERE
+([Invoice Date].[Calendar].&[CY2016],[City].[Sales Territory].&[Southwest]);
+
+//Return Sales w/o Tax For All Columns in 2016 in the SW with
+//Sale Counts > 500
+SELECT
+[Measures].[Sales Amount Without Tax] ON Columns,
+FILTER(
+NONEMPTY([Stock Item].[Color].[Color].Members,
+[Measures].[Sales Amount Without Tax]),
+ [Measures].[Sale Count]> 500) ON ROWS
+FROM
+[Wide World Importers DW]
+WHERE
+([Invoice Date].[Calendar].&[CY2016],[City].[Sales Territory].&[Southwest]);
+
+/**************************************************************/
+
+//Descendants and Ansestors
+
+//What are the month sales of 2014
+//Descendants(parent_set,child_set)
+//Descendants return the values for some child set of the parent set
+
+SELECT
+{[Measures].[Sales Amount Without Tax],[Measures].[Profit]} ON Columns,
+DESCENDANTS
+([Invoice Date].[Calendar].[Calendar Year].[CY2015],
+[Invoice Date].[Calendar].[Calendar Month]) ON ROWS
+FROM
+[Wide World Importers DW];
+
+SELECT
+{[Measures].[Sales Amount Without Tax],[Measures].[Profit]} ON Columns,
+DESCENDANTS
+([Invoice Date].[Calendar].[Calendar Year].[CY2015],
+[Invoice Date].[Calendar].[Calendar Month],SELF_BEFORE_AFTER) ON ROWS
+FROM
+[Wide World Importers DW];
+
+//ANCESTOR(child_set,parent)
+//ANCESTOR return the values for the parent value for some child set
+SELECT
+{[Measures].[Sales Amount Without Tax],[Measures].[Profit]} ON Columns,
+ANCESTOR
+([Invoice Date].[Calendar].[Date].&[2013-01-10T00:00:00],
+[Invoice Date].[Calendar].[Calendar Year]) ON ROWS
+FROM
+[Wide World Importers DW];
+
+SELECT
+{[Measures].[Sales Amount Without Tax],[Measures].[Profit]} ON Columns,
+ANCESTOR
+([Invoice Date].[Calendar].[Date].&[2013-01-10T00:00:00],
+[Invoice Date].[Calendar].[Calendar Year]) ON ROWS
+FROM
+[Wide World Importers DW];
+
+//WHat is sales total and profit for the Sales Territory of Alaska
+SELECT
+{[Measures].[Sales Amount Without Tax],[Measures].[Profit]} ON Columns,
+ANCESTOR
+([City].[Geography].[State Province].&[Alaska],
+[City].[Geography].[Sales Territory]) ON ROWS
+FROM
+[Wide World Importers DW];
+
+//What are the sales total and profit for provinces in the Far West
+SELECT
+{[Measures].[Sales Amount Without Tax],[Measures].[Profit]} ON Columns,
+DESCENDANTS
+([City].[Geography].[Sales Territory].[Far West],
+[City].[Geography].[State Province]
+) ON ROWS
+FROM
+[Wide World Importers DW];
+
+/**************************************************************/
+
+//Navigation (Siblings, Prevmember and Nextmember)
+//Dimesion.Hierarchy.Value.Navigation
+
+//Get profit for all the colors including blue
+
+SELECT 
+[Measures].[Profit] ON COLUMNS,
+[Stock Item].[Color].&[Blue].Siblings ON ROWS
+FROM
+[Wide World Importers DW];
+
+//Get profit for all the sales territories including Far West
+
+SELECT 
+[Measures].[Profit] ON COLUMNS,
+[City].[Geography].[Sales Territory].[Far West].Siblings ON ROWS
+FROM
+[Wide World Importers DW];
+
+//Get profit for the colors alpabetically ahead and behind blue
+
+SELECT 
+[Measures].[Profit] ON COLUMNS,
+{[Stock Item].[Color].&[Blue].Prevmember,
+[Stock Item].[Color].&[Blue].NextMember}ON ROWS
+FROM
+[Wide World Importers DW];
+
+/**************************************************************/
+
+//Time Functions
+
+//OpeningPeriod(child_value,parent) Find the first child value of the parent
+
+//Find Sales w/o Tax the first day of 13 week of 2016
+
+SELECT 
+[Measures].[Sales Amount Without Tax] ON Columns,
+OPENINGPERIOD([Invoice Date].[Iso Calendar].[Date],
+[Invoice Date].[Iso Calendar].[ISO Week Number].&[2016]&[13]) ON ROWS
+FROM
+[Wide World Importers DW];
+
+//Find Sales w/o Tax the last day of october of 2015 on Fiscal Calendar
+
+SELECT 
+[Measures].[Sales Amount Without Tax] ON Columns,
+CLOSINGPERIOD([Invoice Date].[Fiscal Calendar].[Date],
+[Invoice Date].[Fiscal Calendar].[Fiscal Month].&[2015]&[12]) ON ROWS
+FROM
+[Wide World Importers DW];
+
+//Parallelperiod - gets the value for the same time some time in the past
+//Parallelperiod(timeperiod,#,date_in_question) For some date # timeperiod's
+//in the past from date_in_question, what is the value.
+
+//What is the Sales about 3 months priod to 2015-08-13
+
+SELECT
+[Measures].[Sales Amount Without Tax] ON COLUMNS,
+Parallelperiod([Invoice Date].[Calendar].[Calendar Month],3,
+				[Invoice Date].[Calendar].[Date].&[2015-08-13T00:00:00])
+				ON ROWS
+FROM
+[Wide World Importers DW];
+
+//What is the Sales about 3 months prior to 2015-08-13
+
+SELECT
+[Measures].[Sales Amount Without Tax] ON COLUMNS,
+Parallelperiod([Invoice Date].[Calendar].[Calendar Month],3,
+				[Invoice Date].[Calendar].[Date].&[2015-08-13T00:00:00])
+				ON ROWS
+FROM
+[Wide World Importers DW];
+
+//What is the Sales about 2 years prior to 2015-08
+
+SELECT
+[Measures].[Sales Amount Without Tax] ON COLUMNS,
+Parallelperiod([Invoice Date].[Calendar].[Calendar Year],2,
+				[Invoice Date].[Calendar].[Calendar Month].&[2015]&[8])
+				ON ROWS
+FROM
+[Wide World Importers DW];
+
+//PeriodsToDate(level,lastmembertoreturn) 
+//At some date level, return the measure up to the lastmember
+
+//Return profit for 2015 up to Feb-03
+
+SELECT
+[Measures].[Profit] ON COLUMNS,
+PeriodsToDate([Invoice Date].[Calendar].[Calendar Year],
+				[Invoice Date].[Calendar].[Date].&[2015-02-03T00:00:00])
+				ON ROWS
+FROM
+[Wide World Importers DW];
+
+//Return weekly profit for all days up to 2014-04-19
+
+SELECT
+[Measures].[Profit] ON COLUMNS,
+PeriodsToDate([Invoice Date].[Iso Calendar].[ISO Week Number],
+				[Invoice Date].[Iso Calendar].[Date].&[2014-04-19T00:00:00])
+				ON ROWS
+FROM
+[Wide World Importers DW];
+
+/**************************************************************/
+
+//Query Scope - Evaluated at Query time
+//Used to created calculated members or sets
+
+//Members
+
+//Find Averages Sales for each Territory
+WITH Member [Measures].[Average Sales Amount] AS
+[Measures].[Sales Amount Without Tax] / [Measures].[Quantity],
+FORMAT_STRING = "Currency"
+SELECT
+{[Measures].[Sales Amount Without Tax],[Measures].[Profit],
+[Measures].[Average Sales Amount]} ON Columns,
+ORDER([City].[Sales Territory].[Sales Territory].Members
+,[Measures].[Average Sales Amount],DESC)
+ON ROWS
+FROM
+[Wide World Importers DW];
+
+//Find Averages Sales And Profit for each Territory
+WITH
+Member [Measures].[Average Sales Amount] AS
+[Measures].[Sales Amount Without Tax] / [Measures].[Quantity],
+FORMAT_STRING = "Currency"
+Member [Measures].[Profit Margin Percent] AS
+[Measures].[Profit]/[Measures].[Sales Amount Without Tax],
+FORMAT_STRING = "Percent"
+SELECT
+{[Measures].[Sales Amount Without Tax],[Measures].[Profit],
+[Measures].[Average Sales Amount],[Measures].[Profit Margin Percent]} ON Columns,
+ORDER([City].[Sales Territory].[Sales Territory].Members
+,[Measures].[Average Sales Amount],DESC)
+ON ROWS
+FROM
+[Wide World Importers DW];
+
+//Sets can all be used as measures
+
+//Find Averages Sales And Profit for each Territory for my
+//favorite colors
+
+WITH
+Member [Measures].[Average Sales Amount] AS
+[Measures].[Sales Amount Without Tax] / [Measures].[Quantity],
+FORMAT_STRING = "Currency"
+Member [Measures].[Profit Margin Percent] AS
+[Measures].[Profit]/[Measures].[Sales Amount Without Tax],
+FORMAT_STRING = "Percent"
+SET [My Favorite Colors] AS
+{
+[Stock Item].[Color].&[Black],
+[Stock Item].[Color].&[Blue],
+[Stock Item].[Color].&[Yellow],
+[Stock Item].[Color].&[Red]
+}
+SELECT
+{[Measures].[Sales Amount Without Tax],[Measures].[Profit],
+[Measures].[Average Sales Amount],[Measures].[Profit Margin Percent]} ON Columns,
+[My Favorite Colors]
+ON ROWS
+FROM
+[Wide World Importers DW];
+
+//To combine Dimension totals together, we can use Aggregrate Dimensions
+
+//Find Averages Sales And Profit for each Territory for my
+//favorite colors
+
+WITH
+Member [Measures].[Average Sales Amount] AS
+[Measures].[Sales Amount Without Tax] / [Measures].[Quantity],
+FORMAT_STRING = "Currency"
+Member [Measures].[Profit Margin Percent] AS
+[Measures].[Profit]/[Measures].[Sales Amount Without Tax],
+FORMAT_STRING = "Percent"
+MEMBER [Stock Item].[Color].[All].[My Favorite Color Totals] AS
+AGGREGATE(
+{[Stock Item].[Color].&[Black],
+[Stock Item].[Color].&[Blue],
+[Stock Item].[Color].&[Yellow],
+[Stock Item].[Color].&[Red]}
+)
+SET [My Favorite Colors] AS
+{
+[Stock Item].[Color].&[Black],
+[Stock Item].[Color].&[Blue],
+[Stock Item].[Color].&[Yellow],
+[Stock Item].[Color].&[Red]
+}
+SELECT
+{[Measures].[Sales Amount Without Tax],[Measures].[Profit],
+[Measures].[Average Sales Amount],[Measures].[Profit Margin Percent]} ON Columns,
+{[My Favorite Colors],[Stock Item].[Color].[My Favorite Color Totals]}
+ON ROWS
+FROM
+[Wide World Importers DW];
+
+/**************************************************************/
+
+//Ytd And SUM
+WITH
+MEMBER [Measures].[YTD Sales] AS
+SUM(YTD([Invoice Date].[Calendar].Currentmember),[Measures].[Sales Amount Without Tax])
+SELECT 
+{[Measures].[Sales Amount Without Tax], [Measures].[YTD Sales]}
+ON Columns,
+{[Invoice Date].[Calendar].[Calendar Month].&[2015]&[10],
+[Invoice Date].[Calendar].[Calendar Month].&[2016]&[2]} ON Rows
+FROM
+[Wide World Importers DW];
+
+WITH
+MEMBER [Measures].[MTD Sales] AS
+SUM(MTD([Invoice Date].[Calendar].Currentmember),[Measures].[Sales Amount Without Tax])
+SELECT 
+{[Measures].[Sales Amount Without Tax], [Measures].[MTD Sales]}
+ON Columns,
+{[Invoice Date].[Calendar].[Date].&[2013-01-15T00:00:00]} ON Rows
+FROM
+[Wide World Importers DW]
+
+//YTD gives the running total of the current dates yearly value
+
+//YTD(DateDimension.Hierarchy.CurrentMember)
+
